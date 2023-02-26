@@ -74,7 +74,7 @@ app.get('/Contacts/:id', (req, res) => {
 
 //Delete an Contactss
 app.delete('/Contacts/:id', (req, res) => {
-    mysqlConnection.query('DELETE FROM Contacts WHERE EmpID = ?', [req.params.id], (err, rows, fields) => {
+    mysqlConnection.query('DELETE FROM Contacts WHERE  idcontacts= ?', [req.params.id], (err, rows, fields) => {
         if (!err)
             res.send('Deleted successfully.');
         else
@@ -87,9 +87,8 @@ app.delete('/Contacts/:id', (req, res) => {
 //Update an Contactss
 app.put('/Contacts', (req, res) => {
     let emp = req.body;
-    var sql = "SET first_name = ?;SET last_name = ?;SET email = ?;SET mobile = ?; \
-    CALL ContactsAddOrEdit(@first_name,@last_name,@email, @mobile);";
-    mysqlConnection.query(sql, [emp.first_name, emp.last_name, emp.email, emp.mobile], (err, rows, fields) => {
+    var sql = "CALL ContactsAddOrEdit(?, ?, ?, ?, ?);";
+    mysqlConnection.query(sql, [emp.idcontacts, emp.first_name, emp.last_name, emp.email, emp.mobile], (err, rows, fields) => {
         if (!err)
             res.send('Updated successfully');
         else
